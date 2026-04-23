@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Phishing Awareness Training</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body { background-color: #0d1b2a; color: white; }
+    .card { border-radius: 15px; }
+    .quiz-option { cursor: pointer; }
+    .quiz-option:hover { background-color: #e0e0e0; }
+  </style>
+</head>
+<body>
+
+<div class="container py-5">
+  <h1 class="text-center mb-4">Phishing Awareness Training</h1>
+
+  <!-- Section: What is Phishing -->
+  <div class="card p-4 mb-4 text-dark">
+    <h3>What is Phishing?</h3>
+    <p>Phishing is a cyber attack where attackers pretend to be trusted sources to steal sensitive information like passwords and credit card details.</p>
+  </div>
+
+  <!-- Section: Recognizing Phishing -->
+  <div class="card p-4 mb-4 text-dark">
+    <h3>How to Recognize Phishing Emails</h3>
+    <ul>
+      <li>Suspicious sender address</li>
+      <li>Urgent or threatening language</li>
+      <li>Unexpected attachments</li>
+      <li>Strange links</li>
+    </ul>
+  </div>
+
+  <!-- Section: Fake Websites -->
+  <div class="card p-4 mb-4 text-dark">
+    <h3>Fake Websites</h3>
+    <p>Always check URLs carefully. Fake websites often mimic real ones but have slight spelling differences.</p>
+  </div>
+
+  <!-- Section: Quiz -->
+  <div class="card p-4 mb-4 text-dark">
+    <h3>Quick Quiz</h3>
+    <p><strong>Question:</strong> Which of the following is a phishing sign?</p>
+    <div class="list-group">
+      <div class="list-group-item quiz-option" onclick="checkAnswer(false)">Email from your boss with normal request</div>
+      <div class="list-group-item quiz-option" onclick="checkAnswer(true)">Urgent email asking for your password</div>
+      <div class="list-group-item quiz-option" onclick="checkAnswer(false)">Newsletter you subscribed to</div>
+    </div>
+    <p id="result" class="mt-3"></p>
+  </div>
+
+</div>
+
+<script>
+  function checkAnswer(correct) {
+    const result = document.getElementById('result');
+    if (correct) {
+      result.innerHTML = "Correct! This is a common phishing tactic.";
+      result.style.color = "green";
+    } else {
+      result.innerHTML = "Incorrect. Try again!";
+      result.style.color = "red";
+    }
+  }
+</script>
+
+</body>
+</html>
