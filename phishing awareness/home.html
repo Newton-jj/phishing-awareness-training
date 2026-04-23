@@ -10,6 +10,7 @@
     .card { border-radius: 15px; }
     .quiz-option { cursor: pointer; }
     .quiz-option:hover { background-color: #e0e0e0; }
+    .progress { height: 20px; }
   </style>
 </head>
 <body>
@@ -17,13 +18,13 @@
 <div class="container py-5">
   <h1 class="text-center mb-4">Phishing Awareness Training</h1>
 
-  <!-- Section: What is Phishing -->
+  
   <div class="card p-4 mb-4 text-dark">
     <h3>What is Phishing?</h3>
     <p>Phishing is a cyber attack where attackers pretend to be trusted sources to steal sensitive information like passwords and credit card details.</p>
   </div>
 
-  <!-- Section: Recognizing Phishing -->
+  
   <div class="card p-4 mb-4 text-dark">
     <h3>How to Recognize Phishing Emails</h3>
     <ul>
@@ -34,37 +35,115 @@
     </ul>
   </div>
 
-  <!-- Section: Fake Websites -->
-  <div class="card p-4 mb-4 text-dark">
-    <h3>Fake Websites</h3>
-    <p>Always check URLs carefully. Fake websites often mimic real ones but have slight spelling differences.</p>
-  </div>
 
-  <!-- Section: Quiz -->
   <div class="card p-4 mb-4 text-dark">
-    <h3>Quick Quiz</h3>
-    <p><strong>Question:</strong> Which of the following is a phishing sign?</p>
-    <div class="list-group">
-      <div class="list-group-item quiz-option" onclick="checkAnswer(false)">Email from your boss with normal request</div>
-      <div class="list-group-item quiz-option" onclick="checkAnswer(true)">Urgent email asking for your password</div>
-      <div class="list-group-item quiz-option" onclick="checkAnswer(false)">Newsletter you subscribed to</div>
+    <h3>Interactive Quiz</h3>
+    <div class="progress mb-3">
+      <div id="progressBar" class="progress-bar" role="progressbar" style="width: 0%"></div>
     </div>
+
+    <p id="question"></p>
+    <div id="options" class="list-group"></div>
     <p id="result" class="mt-3"></p>
+    <button id="nextBtn" class="btn btn-primary mt-3" onclick="nextQuestion()" style="display:none;">Next</button>
   </div>
 
 </div>
 
 <script>
-  function checkAnswer(correct) {
-    const result = document.getElementById('result');
-    if (correct) {
-      result.innerHTML = "Correct! This is a common phishing tactic.";
-      result.style.color = "green";
-    } else {
-      result.innerHTML = "Incorrect. Try again!";
-      result.style.color = "red";
-    }
+const quizData = [
+  {
+    question: "Which of the following is a phishing sign?",
+    options: [
+      "Email from your boss with normal request",
+      "Urgent email asking for your password",
+      "Newsletter you subscribed to"
+    ],
+    correct: 1
+  },
+  {
+    question: "What should you check before clicking a link?",
+    options: [
+      "The font size",
+      "The URL and sender",
+      "The color of the email"
+    ],
+    correct: 1
+  },
+  {
+    question: "What is a common phishing tactic?",
+    options: [
+      "Offering free money",
+      "Sending legitimate invoices",
+      "Providing customer support"
+    ],
+    correct: 0
   }
+];
+
+let currentQuestion = 0;
+let score = 0;
+
+function loadQuestion() {
+  const q = quizData[currentQuestion];
+  document.getElementById('question').innerText = q.question;
+  const optionsDiv = document.getElementById('options');
+  optionsDiv.innerHTML = "";
+
+  q.options.forEach((option, index) => {
+    const div = document.createElement('div');
+    div.classList.add('list-group-item', 'quiz-option');
+    div.innerText = option;
+    div.onclick = () => checkAnswer(index);
+    optionsDiv.appendChild(div);
+  });
+
+  document.getElementById('result').innerText = "";
+  document.getElementById('nextBtn').style.display = 'none';
+
+  updateProgress();
+}
+
+function checkAnswer(selected) {
+  const q = quizData[currentQuestion];
+  const result = document.getElementById('result');
+
+  if (selected === q.correct) {
+    result.innerText = "Correct!";
+    result.style.color = "green";
+    score++;
+  } else {
+    result.innerText = "Wrong answer.";
+    result.style.color = "red";
+  }
+
+  document.querySelectorAll('.quiz-option').forEach(opt => opt.onclick = null);
+  document.getElementById('nextBtn').style.display = 'block';
+}
+
+function nextQuestion() {
+  currentQuestion++;
+  if (currentQuestion < quizData.length) {
+    loadQuestion();
+  } else {
+    showScore();
+  }
+}
+
+function showScore() {
+  document.getElementById('question').innerText = `Quiz Completed! Your score: ${score}/${quizData.length}`;
+  document.getElementById('options').innerHTML = "";
+  document.getElementById('result').innerText = "";
+  document.getElementById('nextBtn').style.display = 'none';
+  document.getElementById('progressBar').style.width = "100%";
+}
+
+function updateProgress() {
+  const progress = ((currentQuestion) / quizData.length) * 100;
+  document.getElementById('progressBar').style.width = progress + "%";
+}
+
+loadQuestion();
 </script>
 
 </body>
